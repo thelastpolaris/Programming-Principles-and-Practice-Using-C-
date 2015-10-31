@@ -1,0 +1,38 @@
+1+2+3+4+5+6+7+81= 36
+âBad token
+€Bad token
+“Bad token
+2âBad token
+€Bad token
+“Bad token
+3âBad token
+€Bad token
+“Bad token
+4!+2 = 26
+  (1+3 ')' expected
+(1+)primary expected
+ 1*2/3%4+5âBad token
+€Bad token
+“Bad token
+6 = 6
+()primary expected
+ 1+ primary expected
++primary expected
+11= 1
+++primary expected
+ 1/01get: undefined name 
+/0 get: undefined name 
+1++primary expected
+2 = 2
+âBad token
+€Bad token
+“Bad token
+2 = 2
+âBad token
+€Bad token
+“Bad token
+2 = 2
+   1.23457e+15info loss
+ 'Bad token
+a'Bad token
+ q

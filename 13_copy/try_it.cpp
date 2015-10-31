@@ -1,0 +1,259 @@
+#include "../fltk/Simple_window.h"   // get access to our window library
+#include "../fltk/Graph.h"                    // get access to our graphics library facilities 
+
+int main() {
+	const Point x {100,100};
+
+	Simple_window win1 {x,600,400,"two lines"};
+
+	Graph_lib::Line horizontal {x,Point{200,100}};                   // make a horizontal line
+	Graph_lib::Line vertical {Point{150,50},Point{150,150}};   // make a vertical line
+
+	win1.attach(horizontal);                                      // attach the lines to the window
+	win1.attach(vertical);
+	win1.wait_for_button();                                      // display!
+
+	Graph_lib::Lines l2;
+	l2.add(Point{100,100}, Point{200,100});        // first line: horizontal
+	l2.add(Point{150,50}, Point{150,150});          // second line: vertical
+	win1.attach(l2);
+	win1.set_label("two lines v2");
+
+	Simple_window win2 {x,600,400,"Grid"};
+	Graph_lib::Lines grid;
+	int x_size = win2.x_max();
+	int y_size = win2.y_max();
+	int x_grid = 80;
+	int y_grid = 50;
+
+	for(int x = x_grid; x < x_size; x+=x_grid) {
+		grid.add(Point {x, 0}, Point {x,y_size});
+	}
+	for(int y = y_grid; y < y_size; y+=y_grid) {
+		grid.add(Point {0, y}, Point {x_size,y});
+	}
+
+	grid.set_color(Graph_lib::Color::red);
+	grid.set_style(Graph_lib::Line_style {Graph_lib::Line_style::dash,2});
+
+	win2.attach(grid);
+
+	win2.wait_for_button();                                      // display!
+
+	Simple_window win3 {x,600,400,"Open Polyline"};
+
+	Graph_lib::Open_polyline opl;
+    opl.add(Point {100,100});
+    opl.add(Point {150,200});
+    opl.add(Point {250,250});
+    opl.add(Point {300,200});
+
+
+	Graph_lib::Closed_polyline cpl;
+	cpl.add(Point {100,100});
+	cpl.add(Point {150,200});
+	cpl.add(Point {250,250});
+	cpl.add(Point {300,200});
+
+	win3.attach(cpl);
+	win3.attach(opl);
+
+	win3.wait_for_button();                                      // display!
+
+	Simple_window win4 {x,600,400,"Polygon"};
+
+	Graph_lib::Polygon p;
+    p.add(Point {100,100});
+    p.add(Point {150,200});
+    p.add(Point {250,250});
+    p.add(Point {300,200});
+
+	win4.attach(p);
+
+	win4.wait_for_button();                                      // display!
+
+	Simple_window win5 {x,800,600,"Rectangles"};
+
+	Graph_lib::Rectangle rect00 {Point{150,100},200,100};
+	Graph_lib::Rectangle rect11 {Point{50,50},Point{250,150}};
+	Graph_lib::Rectangle rect12 {Point{50,150},Point{250,250}};     // just below rect11
+	Graph_lib::Rectangle rect21 {Point{250,50},200,100};                  // just to the right of rect11
+	Graph_lib::Rectangle rect22 {Point{250,150},200,100};                // just below rect21
+
+	rect00.set_fill_color(Graph_lib::Color::yellow);
+	rect11.set_fill_color(Graph_lib::Color::blue);
+	rect12.set_fill_color(Graph_lib::Color::red);
+	rect21.set_fill_color(Graph_lib::Color::green);
+
+	rect11.move(400,0);
+	rect11.set_fill_color(Graph_lib::Color::white);
+	win5.set_label("Rectangles 2");
+
+	win5.attach(rect00);
+	win5.attach(rect11);
+	win5.attach(rect12);
+	win5.attach(rect21);
+	win5.attach(rect22);
+
+	win5.put_on_top(rect00);
+	win5.set_label("Rectangles 3");
+
+	rect00.set_color(Graph_lib::Color::invisible);
+	rect11.set_color(Graph_lib::Color::invisible);
+	rect12.set_color(Graph_lib::Color::invisible);
+	rect21.set_color(Graph_lib::Color::invisible);
+	rect22.set_color(Graph_lib::Color::invisible);
+
+	win5.wait_for_button();                                      // display!
+
+	Simple_window win6 {x,800,600,"16x16 color matrix"};
+	
+	Graph_lib::Vector_ref<Graph_lib::Rectangle> vr;
+
+	for (int i = 0; i < 16; ++i) {
+		for (int j = 0; j < 16; ++j) {
+			vr.push_back(new Graph_lib::Rectangle{Point{i*20,j*20},20,20});
+			vr[vr.size()-1].set_fill_color(i*16+j);
+			win6.attach(vr[vr.size()-1]);
+		}
+	}
+
+	win6.wait_for_button();                                      // display!
+
+	Simple_window win7 {x,800,600,"Closed polyline with text"};
+
+	Graph_lib::Text t {Point{200,200},"A closed polyline that isn't a polygon"};
+	t.set_color(Graph_lib::Color::blue);
+
+	win7.attach(t);
+	win7.attach(cpl);
+
+	win7.wait_for_button();                                      // display!
+
+	Simple_window win8 {x,800,600,"Closed polyline with text"};
+
+	Graph_lib::Circle c1 {Point {100,200},50};
+	Graph_lib::Circle c2 {Point {150,200},100};
+	Graph_lib::Circle c3 {Point {200,200},150};
+
+	win8.attach(c1);
+	win8.attach(c2);
+	win8.attach(c3);
+
+	win8.wait_for_button();                                      // display!
+
+	Simple_window win9 {x,800,600,"Ellipse"};
+
+	Graph_lib::Ellipse e1 {Point{200,200},50,50};
+	Graph_lib::Ellipse e2 {Point{200,200},100,50};
+	Graph_lib::Ellipse e3 {Point{200,200},100,150};
+
+	win9.attach(e1);
+	win9.attach(e2);
+	win9.attach(e3);
+
+	win9.wait_for_button();                                      // display!
+
+	Simple_window win10 {x,800,600,"Marked Polyline"};
+
+	Graph_lib::Marked_polyline mpl {"1234"};
+	mpl.add(Point{100,100});
+	mpl.add(Point{150,200});
+	mpl.add(Point{250,250});
+	mpl.add(Point{300,200});
+	mpl.add(Point{300,250});
+
+	win10.attach(mpl);
+
+	win10.wait_for_button();                                      // display!
+
+	Simple_window win11 {x,800,600,"Marks"};
+
+	Graph_lib::Marks pp {"x"};
+	pp.add(Point{100,100});
+	pp.add(Point{150,200});
+	pp.add(Point{250,250});
+	pp.add(Point{300,200});
+	pp.add(Point{300,250});
+
+	win11.attach(pp);
+
+	win11.wait_for_button();                                      // display!
+
+	Simple_window win12 {x,800,600,"Circles with centers"};
+
+	Graph_lib::Mark m1 {Point{100,200},'x'};
+	Graph_lib::Mark m2 {Point{150,200},'y'};
+	Graph_lib::Mark m3 {Point{200,200},'z'};
+	c1.set_color(Graph_lib::Color::blue);
+	c2.set_color(Graph_lib::Color::red);
+	c3.set_color(Graph_lib::Color::green);
+
+	win12.attach(m1);
+	win12.attach(m2);
+	win12.attach(m3);
+	win12.attach(c1);
+	win12.attach(c2);
+	win12.attach(c3);
+
+	win12.wait_for_button();                                      // display!
+
+
+	Simple_window win13 {x,800,600,"Hurricane 'Rita'"};
+
+	Graph_lib::Image path{Point{0,0},"rita_path.gif"};
+	Graph_lib::Image rita{Point{0,0},"rita2.jpg"};
+	path.set_mask(Point{50,250},600,400);
+	win13.attach(path);
+	win13.attach(rita);
+	win13.attach(path);
+	
+	win13.wait_for_button();                                      // display!
+	
+
+	Simple_window win14 {x,800,1000,"Drill 1"};
+
+	Graph_lib::Lines grid2;
+	Graph_lib::Vector_ref<Graph_lib::Rectangle> gr;
+
+	for (int i = 1; i <= 8; ++i) {
+		grid2.add(Point{0,i*100},Point{800,i*100});
+		grid2.add(Point{i*100,0},Point{i*100,800});
+	};
+	for (int j = 0; j < 8; ++j) {
+		gr.push_back(new Graph_lib::Rectangle{Point{j*100,j*100},100,100});
+		gr[gr.size()-1].set_fill_color(Graph_lib::Color::red);
+		gr[gr.size()-1].set_color(Graph_lib::Color::invisible);
+		win14.attach(gr[gr.size()-1]);
+	}
+
+	Graph_lib::Image i1 {Point{0,600},"Harry.jpg"};
+	Graph_lib::Image i2 {Point{200,600},"Harry.jpg"};
+	Graph_lib::Image i3 {Point{400,600},"Harry.jpg"};
+
+	win14.attach(i1);
+	win14.attach(i2);
+	win14.attach(i3);	
+	win14.attach(grid2);
+
+	Graph_lib::Image i4 {Point{0,0},"cartman.jpg"};
+	win14.attach(i4);
+	win14.set_label("Drill");
+	for (int i = 0; i < 8; ++i) {
+		i4.move(0,i*100);
+		for (int j = 0; j < 8; ++j) {
+			win14.wait_for_button();
+			i4.move(100,0);
+		}
+		i4.move(-800,-i*100);
+	}
+	win14.wait_for_button();                                      // display!
+	
+
+	Simple_window win15 {x,800,1000,"Test for Review"};
+	Graph_lib::Text txt {Point{200,200}, "Test for the Review"};
+	//txt.set_style(Graph_lib::Line_style{Line_style_type::solid});
+	win15.attach(txt);	
+
+	win15.wait_for_button();                                      // display!
+}

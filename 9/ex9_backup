@@ -1,0 +1,167 @@
+#include "std_lib_facilities.h"
+#include "Chrono.h"
+
+using namespace Chrono;
+
+enum class Genre { //Genre of the book
+	fiction, nonfiction, periodical, bibliography, children
+};
+
+class Patron {
+public:
+	Patron(string nn, int cn, double ff)
+	:n{nn}, cn{cn}, f{ff}
+	{
+	}
+	string write_name() const {return n;};
+	int write_cn() const {return cn;};
+	double write_fee() const {return f;};
+	void fee(double sum) {f += sum;}; // Changes the value of fee
+	bool check_fee() const {return f;}; // Checks if the user owes a fee
+private:
+	string n; // User's name
+	int cn; // Card number
+	double f; // Library fees
+};
+
+bool operator==(Patron& a, Patron& b) { // "Equal to" operator to use with patrons
+	return a.write_name() == b.write_name() &&
+		a.write_cn() == b.write_cn() &&
+		a.write_fee() == b.write_fee();
+	}
+
+bool operator!=(Patron& a, Patron& b) { // "Not equal to" operator to use with patrons
+	return !(a == b);
+}
+
+void operator<<(ostream& os, Patron& n) {
+	os << n.write_name() << endl << n.write_cn() << endl << n.write_fee() << endl;
+}
+
+vector<string> patron_fee(const vector<Patron>& p) { // Returns vector with patrons that owe fees
+	vector<string> owe; // To hold patrons with fees
+	for (int i = 0; i < p.size(); i++) {
+		if (p[i].check_fee()) owe.push_back(p[i].write_name());
+	}
+	return owe;
+}
+
+class Book {
+public:
+	class Invalid{};
+	Book(string ISBN, string tt, string aa, Genre gg, int cc, bool ch)
+	:ISBN{ISBN}, t{tt}, a{aa}, g{gg}, c{cc}, ch{ch}
+	{
+		for (int i = 0; i < ISBN.size(); i++) { // Check if the ISBN is valid according to the notation x-x-x-n where x is int and n is a digit or letter
+			if (ISBN.size() != 4) throw Invalid{}; // If ISBN consists of less than 4 characters then throw an exception
+			if (i < 3) { // Check if the first 3 characters are ints
+				switch(ISBN[i]) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9':
+						break;
+					default:
+						throw Invalid{};
+				}
+			}
+		}
+	}
+	string write_ISBN() {return ISBN;}; // Returns ISBN
+	string write_title() {return t;}; // Returns title
+	string write_author() {return a;}; // Returns author
+	int write_copyright() {return c;}; // Returns copyright
+	int write_genre() {return int(g);}; // Returns genre
+	bool write_check() {return ch;}; // Returns check
+	void check_book(bool s) { ch = s;}; // Changes the value of check
+private:
+	string ISBN; // ISBN
+	string t; // Title
+	string a; // Author
+	Genre g;
+	int c; // Copyright date
+	bool ch; // Check (indicates if the book is in library or not)
+};
+
+bool operator==(Book& a, Book& b) { // "Equal to" operator to use with books
+	return a.write_ISBN() == b.write_ISBN();
+	}
+
+bool operator!=(Book& a, Book& b) { // "Not equal to" operator to use with books
+	return !(a == b);
+}
+
+void operator<<(ostream& os, Book& n) {
+	os << n.write_title() << endl << n.write_author() << endl << n.write_ISBN() << endl << n.write_genre();
+}
+
+class Library {
+public:
+	void add_book(Book b);
+	void add_patron(Patron p);
+	void check_out(Patron p, Book b); // Check out the book and assign it to the user
+	class Library_error{};
+private:
+	vector<Patron> patrons;
+	vector<Book> books;
+	struct Transaction { // Library transactions
+		Book b;
+		Patron p;
+		Date d;
+	};
+	vector<Transaction> transactions; // Holds all transactions
+};
+
+void Library::add_book(Book b) {
+	for (Book x : books) {
+		if (b == x) return;
+	}
+	books.push_back(b);
+}
+
+void Library::add_patron(Patron p) {
+	for (Patron x : patrons) {
+		if (p == x) return;
+	}
+	patrons.push_back(p);
+}
+
+void Library::check_out(Patron p, Book b) {
+	for (Book x : books) {
+		if (b == x) break;
+		throw Library_error{};
+	}
+
+	for (Patron x : patrons) {
+		if (p == x) break;
+		throw Library_error{};
+	}
+
+	if (p.check_fee()) {
+		char ch;
+		cout << "This patron owes fee. Do you want to issue him the book(s)? (y or n)" << endl;
+		cin >> ch;
+		if (ch = 'n') return;
+		if (ch != 'y') cerr << "Wrong character detected\n";
+	}
+
+	transactions.push_back(Transaction {b, p, Date{}});
+
+}
+
+int main() try {
+	
+}
+
+catch (Book::Invalid) {
+	cerr << "Invalid data provided" << endl;
+}
+catch (Library::Library_error) {
+	cerr << "No such patron or a book in the library" << endl;
+}

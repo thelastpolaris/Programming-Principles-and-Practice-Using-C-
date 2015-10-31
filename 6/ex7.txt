@@ -1,0 +1,16 @@
+Byte:
+	Byte
+
+And:
+	Byte
+	And "&" Byte
+
+Xor:
+	And
+	Xor "^" And
+
+Expression:
+	Xor
+	Expression|Xor
+	!Xor
+	~Xor

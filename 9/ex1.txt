@@ -1,0 +1,42 @@
+Set of plausible operations:
+computer file:
+	create
+	delete
+	copy
+	edit
+	rename
+	send per e-mail
+a web page:
+	open
+	close
+	add to bookmarks
+	share
+	save
+a toaster:
+	switch on/off
+	bake
+	pull out toasts
+	inform about finishing the baking
+a music player:
+	play
+	pause
+	stop
+	fast forward/backward
+	show info about track
+	add to favourites
+	sort by artists/albums/songs
+a coffee cup:
+	drink
+	refill
+	wash
+a car engine:
+	burn fuel
+	spin the wheels
+a cell phone:
+	input numbers
+	add to contact list
+	call person from contact list
+	call given number
+	send SMS
+a telephone directory:
+	search
