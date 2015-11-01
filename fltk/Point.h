@@ -11,7 +11,8 @@
 
 struct Point {
     int x, y;
-    Point(int xx, int yy) : x(xx), y(yy) { }
+    //Point(int xx, int yy) : x(xx), y(yy) { }
+    constexpr Point(int xx, int yy) : x(xx), y(yy) { }
     Point() :x(0), y(0) { }
 };
 
