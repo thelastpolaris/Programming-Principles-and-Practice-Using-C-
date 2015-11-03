@@ -11,6 +11,7 @@
 #include <FL/Fl_Image.H>
 #include "Point.h"
 #include "std_lib_facilities.h"
+#include <functional>
 
 namespace Graph_lib {
 
@@ -143,7 +144,8 @@ public:
 
 //------------------------------------------------------------------------------
 
-typedef double Fct(double);
+using Fct = double(double);
+using Fct_Capture = function<double(double)>;
 
 class Shape  {        // deals with color and style, and holds sequence of lines 
 public:
@@ -166,6 +168,7 @@ protected:
     virtual void draw_lines() const;   // draw the appropriate lines
     void add(Point p);                 // add p to points
     void set_point(int i,Point p);     // points[i]=p;
+    void clear_points() { points.erase(points.begin(),points.end()); };
 private:
     vector<Point> points;              // not used by all shapes
     Color lcolor;                      // color for lines and characters
@@ -181,6 +184,8 @@ private:
 struct Function : Shape {
     // the function parameters are not stored
     Function(Fct f, double r1, double r2, Point orig,
+        int count = 100, double xscale = 25, double yscale = 25);
+    Function(Fct_Capture f, double r1, double r2, Point xy,
         int count = 100, double xscale = 25, double yscale = 25);    
 };
 
