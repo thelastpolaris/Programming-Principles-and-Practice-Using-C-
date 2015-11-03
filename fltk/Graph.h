@@ -135,6 +135,7 @@ public:
 
     void push_back(T& s) { v.push_back(&s); }
     void push_back(T* p) { v.push_back(p); owned.push_back(p); }
+    void clear() { v.clear(); }
 
     T& operator[](int i) { return *v[i]; }
     const T& operator[](int i) const { return *v[i]; }

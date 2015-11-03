@@ -20,6 +20,9 @@ constexpr int numbers = 100;
 constexpr int xscale = 25;
 constexpr int yscale = 25;
 
+constexpr int xoffset = 25;
+constexpr int yoffset = 25;
+
 int main() {
 	Graph_lib::Window win {Point {100,100}, x_size, y_size, "sin(), cos(), sin(x) + cos(x), sin(x)*sin(x) + cos(x)*cos(x)"};
 	Funct f1 ([](double x) { return std::sin(x);}, r1, r2, orig, numbers, xscale, yscale);
@@ -37,7 +40,14 @@ int main() {
 	f4.set_color(Color::dark_green);
 	win.attach(f4);
 
-	
+	Axis x_axis (Axis::x, Point{xoffset,y_size/2},x_size-2*xoffset,(x_size-2*xoffset)/xscale, "x axis");
+	x_axis.set_color(Color::red);
+	win.attach(x_axis);
+
+	Axis y_axis (Axis::y, Point{x_size/2,y_size-yoffset},y_size-2*yoffset,(y_size-2*yoffset)/yscale, "y axis");
+	y_axis.set_color(Color::red);
+	win.attach(y_axis);
+
 
 	gui_main();
 }
