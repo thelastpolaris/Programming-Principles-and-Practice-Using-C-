@@ -13,7 +13,6 @@ istream& operator >>(istream& is, Distribution& d) {
 	if(is >> c1 >> dd.year >> c2 >> dd.young >> dd.middle >> dd.old >> c3) {
 		if (c1 != '(' || c2 != ':' || c3 != ')') {
 			is.clear(ios_base::failbit);
-			return is;
 		}
 		else d = dd;
 	}
