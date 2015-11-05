@@ -162,6 +162,7 @@ public:
 
     Point point(int i) const { return points[i]; } // read only access to points
     int number_of_points() const { return int(points.size()); }
+    void clear_points() { points.erase(points.begin(),points.end()); };
 
     virtual ~Shape() { }
 protected:
@@ -169,7 +170,7 @@ protected:
     virtual void draw_lines() const;   // draw the appropriate lines
     void add(Point p);                 // add p to points
     void set_point(int i,Point p);     // points[i]=p;
-    void clear_points() { points.erase(points.begin(),points.end()); };
+    
 private:
     vector<Point> points;              // not used by all shapes
     Color lcolor;                      // color for lines and characters
