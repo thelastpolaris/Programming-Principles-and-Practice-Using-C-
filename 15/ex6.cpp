@@ -8,31 +8,6 @@ that is a rectangles where the height represents the value.
 
 namespace Graph_lib {
 
-class Bar : public Shape {
-public:
-	Bar(Point xy, int x, int y) :xsize{x}, ysize{y} { add(xy); }
-	void add_value(double v);
-	void remove_value(int i);
-	void draw_lines() const;
-	void set_bar_color(Color c, int i) { rectangles[i].set_color(c); };
-	void set_bar_fill_color(Color c, int i) { rectangles[i].set_fill_color(c); };
-	void set_bar_label(string t, int i) { labels[i].set_label(t); };
-private:
-	int xsize;
-	int ysize;
-	vector<double> values;
-	Vector_ref<Text> labels;
-	Vector_ref<Rectangle> rectangles;
-};
-
-class Scale {
-	double max;
-	double size;
-public:
-	Scale(double m, double s) :max{m}, size{s} { }
-	int operator()(double value) { return ((value)/max)*size; };
-};
-
 void Bar::add_value(double v) {
 	values.push_back(v);
 	labels.push_back(new Text{Point{0,0}," "});
@@ -52,13 +27,14 @@ void Bar::add_value(double v) {
 		if (values[i] > max_val) max_val = values[i];
 	}
 
-	Scale ys {max_val, ysize};
+	Scale_bar ys {max_val, ysize};
 
 	labels.clear();
 	rectangles.clear();
 	for (int i = 0; i < values.size(); ++i) {
 		rectangles.push_back(new Rectangle {Point {point(0).x+bar_width*i+bar_width*0.2, point(0).y - ys(values[i])}, bar_width-bar_width*0.2, ys(values[i])});
-		labels.push_back(new Text {Point {rectangles[i].point(0).x, point(0).y + ysize*0.1}, labels_c[i].label()});
+		if (i > values.size()/2) labels.push_back(new Text {Point {rectangles[i].point(0).x+2, point(0).y + ysize*0.1+14*(values.size()-i)}, labels_c[i].label()});
+		else labels.push_back(new Text {Point {rectangles[i].point(0).x+2, point(0).y + ysize*0.1+14*i}, labels_c[i].label()});
 	}
 	for (int i = 0; i < colors.size(); ++i) {
 		rectangles[i].set_color(colors[i]);
@@ -69,12 +45,26 @@ void Bar::add_value(double v) {
 void Bar::draw_lines() const {
 	for (int i = 0; i < rectangles.size(); ++i) {
 		rectangles[i].draw_lines();
-		Line l {Point {point(0).x,rectangles[i].point(0).y},Point {point(0).x*0.8,rectangles[i].point(0).y}};
-		l.set_style(Line_style::dash);
-		l.draw();
-		Text v {Point {point(0).x*0.5,rectangles[i].point(0).y}, to_string(values[i])};
-		v.draw_lines();
+
+		double max_val = 0;
+	for (int i = 0; i <= rectangles.size(); ++i) {
+		if (values[i] > max_val) max_val = values[i];
+	}
+
+		Scale_bar ys {max_val, ysize};
+
+		if ((i == 0 || i == rectangles.size()-1) || ys(values[i]) - ys(values[i-1]) > 15 && ys(values[i+1]) - ys(values[i]) > 15) {
+				Text v {Point {point(0).x*0.5,rectangles[i].point(0).y}, to_string(values[i])};
+				v.draw_lines();
+				Line l {Point {point(0).x,rectangles[i].point(0).y},Point {rectangles[i].point(0).x,rectangles[i].point(0).y}};
+				l.set_style(Line_style::dash);
+				l.draw();
+		}
+
 		if (labels[i].label() != " ") {
+			Line l2 {Point {rectangles[i].point(0).x,rectangles[i].point(0).y},Point {rectangles[i].point(0).x,labels[i].point(0).y}};
+			l2.set_style(Line_style::dash);
+			l2.draw();
 			labels[i].draw();
 		}
 	}
@@ -94,7 +84,7 @@ constexpr int yoffset = 25;
 
 using namespace Graph_lib;
 
-int main() {
+/*int main() {
 	srand(time(0));
 	Simple_window win {Point {100,100}, x_size, y_size, "Bar chart"};
 	Bar b {Point{100,500}, 500, 300};
@@ -106,5 +96,5 @@ int main() {
 	b.set_bar_label("Third",3);
 	win.attach(b);
 	win.wait_for_button();
-}
+}*/
 
