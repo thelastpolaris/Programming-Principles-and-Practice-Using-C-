@@ -1,6 +1,4 @@
-#include "../14/14.h"
-#include <iostream>
-#include "../fltk/GUI.h"
+#include "16.h"
 using namespace Graph_lib;
 
 const int x_maxl = 800;
@@ -87,7 +85,7 @@ void Lines_window::next() {
 int main()
 	try{
 		Lines_window win {Point{100,100},x_maxl,y_maxl,"lines"};
-		return gui_main();
+		gui_main();
 	}
 	catch(exception& e) {
 		cerr << "exception: " << e.what() << endl;
