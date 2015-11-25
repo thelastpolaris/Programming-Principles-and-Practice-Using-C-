@@ -133,13 +133,13 @@ Link* Link::advance(int n) {
 	if (0 < n) {
 		while(n--) {
 			if(succ == nullptr) return nullptr;
-			p = succ;
+			p = p->succ;
 		}
 	}
 	else if (n < 0) {
 		while(n++) {
 			if(prev == nullptr) return nullptr;
-			p = prev;
+			p = p->prev;
 		}
 	}
 	return p;
