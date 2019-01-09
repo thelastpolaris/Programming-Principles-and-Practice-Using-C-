@@ -1,0 +1,7 @@
+th dtls f / sm nfnt. th prbbl r, snc th r lmtd nl b hmn nvntvnss nd cprcsnss. 
+
+fr xmpl, w hv nt cnsdrd th cmplxt mpld b ntrl lnggs. wht s wrttn s 12.35 n nglsh wll b cnvntnll rprsntd s 12,35 n mst thr rpn lnggs. ntrll, th c++ stndrd lbrr prvds fclts fr dlng wth tht nd mn thr ntrl-lngg-spcfc spcts f /. hw d  wrt chns chrctrs? hw d  cmpr strngs wrttn sng mllm chrctrs? thr r nswrs, bt th r fr bnd th scp f ths bk. 
+
+f  nd t knw, lk n mr spclzd r dvncd bks (sch s lngr, stndrd c++ strms nd lcls, nd strstrp, th c++ prgrmmng lngg) nd n lbrr nd sstm dcmnttn. lk fr “lcl”; tht’s th trm sll ppld t fclts fr dlng wth ntrl lngg dffrncs.
+
+
